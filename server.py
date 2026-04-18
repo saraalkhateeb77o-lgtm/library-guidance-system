@@ -21,11 +21,12 @@ def root():
 @app.get("/search")
 def search_books(
     q: str = Query(..., description="Search query"),
-    limit: int = Query(5, ge=1, le=20)
+    limit: int = Query(15, ge=1, le=20)
 ):
     try:
         results = search(q, limit)
 
+        # return results
         text = generateHumanResponse(json.dumps(results)).text
 
         if not type(text) == str:

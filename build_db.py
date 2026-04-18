@@ -8,13 +8,21 @@ with open('./books.json') as f:
     array = json.load(f)
     for book in array:
         # Convert book into a string
-        bookStr = """
-        %s
-        %s
-        %s
-        %s
-        %s
-        """%(book['title'], book['description'], book['author'], book['category'], ' '.join(book['keywords']))
+        bookStr = f"""
+        {book['title']}
+        {book['title']}
+        {book['title']}
+        {book['title']}
+        {book['title']}
+        {book['title']}
+        {book['description']}
+        {book['description']}
+        {book['description']}
+        {' '.join(book['keywords'])}
+        {' '.join(book['keywords'])}
+        {' '.join(book['keywords'])}
+        {' '.join(book['keywords'])}
+        """
 
         # Generate book's embedding
         embeddings = embed(bookStr).embeddings[0].values
