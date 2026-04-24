@@ -1,0 +1,341 @@
+[
+  {
+    "id": "0",
+    "title": "AI Basics",
+    "description": "A beginner-friendly introduction to artificial intelligence, covering core concepts like machine learning, neural networks, and real-world applications.",
+    "category": "Technology",
+    "author": "Omar Alkhateeb",
+    "location": "A1",
+    "keywords": [
+      "AI",
+      "machine learning",
+      "neural networks",
+      "technology",
+      "basics"
+    ]
+  },
+  {
+    "id": "1",
+    "title": "Machine Learning",
+    "description": "Explores supervised and unsupervised learning techniques, including regression, classification, and clustering with practical examples.",
+    "category": "Technology",
+    "author": "Sara Alkhateeb",
+    "location": "B2",
+    "keywords": [
+      "machine learning",
+      "regression",
+      "classification",
+      "clustering",
+      "data"
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Introduction to Cybersecurity",
+    "description": "Covers essential cybersecurity principles, including encryption, network security, and protecting systems from cyber threats.",
+    "category": "Technology",
+    "author": "Ahmad Nasser",
+    "location": "C1",
+    "keywords": [
+      "cybersecurity",
+      "encryption",
+      "network",
+      "security",
+      "hacking"
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Data Science Essentials",
+    "description": "An overview of data analysis, visualization, and statistical methods used in modern data science workflows.",
+    "category": "Technology",
+    "author": "Lina Haddad",
+    "location": "A3",
+    "keywords": [
+      "data science",
+      "analysis",
+      "statistics",
+      "visualization",
+      "python"
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Human Anatomy",
+    "description": "Detailed study of the human body systems, including organs, muscles, and biological functions.",
+    "category": "Medicine",
+    "author": "Dr. Khaled Samir",
+    "location": "D1",
+    "keywords": ["anatomy", "human body", "organs", "biology", "medicine"]
+  },
+  {
+    "id": "5",
+    "title": "Basic Pharmacology",
+    "description": "Introduces drug classifications, mechanisms of action, and safe usage in clinical practice.",
+    "category": "Medicine",
+    "author": "Dr. Rana Saleh",
+    "location": "D2",
+    "keywords": ["pharmacology", "drugs", "medicine", "treatment", "health"]
+  },
+  {
+    "id": "6",
+    "title": "Principles of Economics",
+    "description": "Explains supply and demand, market structures, and economic decision-making in global markets.",
+    "category": "Business",
+    "author": "Yousef Karim",
+    "location": "E1",
+    "keywords": ["economics", "supply", "demand", "market", "finance"]
+  },
+  {
+    "id": "7",
+    "title": "Marketing Fundamentals",
+    "description": "Covers branding, digital marketing, and consumer behavior strategies for modern businesses.",
+    "category": "Business",
+    "author": "Nour Ahmad",
+    "location": "E2",
+    "keywords": ["marketing", "branding", "digital", "business", "strategy"]
+  },
+  {
+    "id": "8",
+    "title": "Financial Accounting",
+    "description": "Introduces accounting principles, financial statements, and business reporting standards.",
+    "category": "Business",
+    "author": "Hassan Ali",
+    "location": "E3",
+    "keywords": ["accounting", "finance", "statements", "business", "reports"]
+  },
+  {
+    "id": "9",
+    "title": "Modern Physics",
+    "description": "Explores quantum mechanics, relativity, and the fundamental laws governing the universe.",
+    "category": "Science",
+    "author": "Dr. Fadi Mansour",
+    "location": "F1",
+    "keywords": ["physics", "quantum", "relativity", "science", "universe"]
+  },
+  {
+    "id": "10",
+    "title": "Organic Chemistry",
+    "description": "Focuses on carbon-based compounds, reactions, and molecular structures in chemistry.",
+    "category": "Science",
+    "author": "Dr. Huda Salem",
+    "location": "F2",
+    "keywords": ["chemistry", "organic", "molecules", "reactions", "science"]
+  },
+  {
+    "id": "11",
+    "title": "Calculus I",
+    "description": "Covers limits, derivatives, and basic integration techniques with practical examples.",
+    "category": "Mathematics",
+    "author": "Ali Zayed",
+    "location": "G1",
+    "keywords": ["calculus", "derivatives", "integration", "math", "limits"]
+  },
+  {
+    "id": "12",
+    "title": "Linear Algebra",
+    "description": "Explains vectors, matrices, and linear transformations with applications in engineering and AI.",
+    "category": "Mathematics",
+    "author": "Maha Adel",
+    "location": "G2",
+    "keywords": [
+      "linear algebra",
+      "matrices",
+      "vectors",
+      "math",
+      "transformations"
+    ]
+  },
+  {
+    "id": "13",
+    "title": "World History",
+    "description": "A comprehensive overview of major historical events, civilizations, and global developments.",
+    "category": "History",
+    "author": "Salem Faris",
+    "location": "H1",
+    "keywords": ["history", "civilizations", "events", "world", "culture"]
+  },
+  {
+    "id": "14",
+    "title": "Psychology Basics",
+    "description": "Introduces human behavior, cognition, and emotional processes in psychology.",
+    "category": "Psychology",
+    "author": "Dr. Dana Nabil",
+    "location": "I1",
+    "keywords": ["psychology", "behavior", "mind", "emotion", "cognition"]
+  },
+  {
+    "id": "15",
+    "title": "Sociology Fundamentals",
+    "description": "Studies social structures, relationships, and cultural dynamics in societies.",
+    "category": "Social Science",
+    "author": "Kareem Yassin",
+    "location": "I2",
+    "keywords": ["sociology", "society", "culture", "relationships", "social"]
+  },
+  {
+    "id": "16",
+    "title": "Software Engineering",
+    "description": "Covers software development lifecycle, design patterns, and best coding practices.",
+    "category": "Technology",
+    "author": "Omar Alkhateeb",
+    "location": "A2",
+    "keywords": ["software", "engineering", "coding", "design", "development"]
+  },
+  {
+    "id": "17",
+    "title": "Web Development",
+    "description": "Teaches frontend and backend development using modern web technologies.",
+    "category": "Technology",
+    "author": "Sara Alkhateeb",
+    "location": "A4",
+    "keywords": ["web", "frontend", "backend", "javascript", "development"]
+  },
+  {
+    "id": "18",
+    "title": "Database Systems",
+    "description": "Explains relational and NoSQL databases, indexing, and query optimization.",
+    "category": "Technology",
+    "author": "Ahmad Nasser",
+    "location": "C2",
+    "keywords": ["database", "SQL", "NoSQL", "queries", "data"]
+  },
+  {
+    "id": "19",
+    "title": "Artificial Neural Networks",
+    "description": "Deep dive into neural network architectures, training, and deep learning techniques.",
+    "category": "Technology",
+    "author": "Lina Haddad",
+    "location": "A5",
+    "keywords": ["neural networks", "deep learning", "AI", "training", "models"]
+  },
+  {
+    "id": "20",
+    "title": "Civil Engineering Basics",
+    "description": "Introduces structural design, materials, and construction principles.",
+    "category": "Engineering",
+    "author": "Eng. Samer Odeh",
+    "location": "J1",
+    "keywords": [
+      "civil",
+      "engineering",
+      "construction",
+      "structures",
+      "materials"
+    ]
+  },
+  {
+    "id": "21",
+    "title": "Electrical Engineering",
+    "description": "Covers circuits, power systems, and electrical design fundamentals.",
+    "category": "Engineering",
+    "author": "Eng. Rami Khalil",
+    "location": "J2",
+    "keywords": ["electrical", "circuits", "power", "engineering", "systems"]
+  },
+  {
+    "id": "22",
+    "title": "Mechanical Engineering",
+    "description": "Explores thermodynamics, mechanics, and machine design concepts.",
+    "category": "Engineering",
+    "author": "Eng. Tarek Said",
+    "location": "J3",
+    "keywords": [
+      "mechanical",
+      "thermodynamics",
+      "machines",
+      "engineering",
+      "design"
+    ]
+  },
+  {
+    "id": "23",
+    "title": "Environmental Science",
+    "description": "Studies ecosystems, sustainability, and environmental protection methods.",
+    "category": "Science",
+    "author": "Dr. Reem Fares",
+    "location": "F3",
+    "keywords": [
+      "environment",
+      "ecosystems",
+      "sustainability",
+      "science",
+      "climate"
+    ]
+  },
+  {
+    "id": "24",
+    "title": "Business Management",
+    "description": "Focuses on leadership, planning, and organizational management strategies.",
+    "category": "Business",
+    "author": "Nour Ahmad",
+    "location": "E4",
+    "keywords": [
+      "management",
+      "leadership",
+      "business",
+      "planning",
+      "organization"
+    ]
+  },
+  {
+    "id": "25",
+    "title": "Entrepreneurship",
+    "description": "Guides starting and growing businesses, innovation, and startup strategies.",
+    "category": "Business",
+    "author": "Yousef Karim",
+    "location": "E5",
+    "keywords": [
+      "startup",
+      "entrepreneurship",
+      "innovation",
+      "business",
+      "ideas"
+    ]
+  },
+  {
+    "id": "26",
+    "title": "Graphic Design",
+    "description": "Teaches visual communication, typography, and design tools for creatives.",
+    "category": "Art",
+    "author": "Maya Zidan",
+    "location": "K1",
+    "keywords": ["design", "graphics", "typography", "visual", "creative"]
+  },
+  {
+    "id": "27",
+    "title": "Photography",
+    "description": "Covers camera techniques, composition, and lighting for professional photography.",
+    "category": "Art",
+    "author": "Fadi Noor",
+    "location": "K2",
+    "keywords": ["photography", "camera", "lighting", "composition", "art"]
+  },
+  {
+    "id": "28",
+    "title": "Philosophy Introduction",
+    "description": "Explores fundamental philosophical questions about existence, knowledge, and ethics.",
+    "category": "Philosophy",
+    "author": "Dr. Sami Qasem",
+    "location": "L1",
+    "keywords": ["philosophy", "ethics", "knowledge", "existence", "thinking"]
+  },
+  {
+    "id": "29",
+    "title": "Education Psychology",
+    "description": "Studies learning processes, teaching methods, and student development.",
+    "category": "Education",
+    "author": "Dr. Hanan Youssef",
+    "location": "M1",
+    "keywords": ["education", "learning", "teaching", "students", "psychology"]
+  },
+  {
+    "id": "30",
+    "title": "love languege",
+    "description": "the love and how to express love",
+    "category": "Social Science",
+    "author": "Dr.wedad",
+    "location": "m3",
+    "keywords": ["love","love languege"]
+  }
+]
