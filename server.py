@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
-from fastapi import FastAPI, Response, Query, HTTPException
+from fastapi import FastAPI, Query, HTTPException
+from fastapi.responses import JSONResponse
 import json
 
 from utils.searchDB import search
@@ -15,7 +16,12 @@ app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "API is running"}
+    return {
+        "status": "success",
+        "data": {
+            "message": "API is running"
+        }
+    }
 
 
 @app.get("/search")
@@ -24,64 +30,71 @@ def search_books(
     limit: int = Query(15, ge=1, le=20)
 ):
     try:
-        suggestion = ""
+        original_q = q
+        fixed_query = None
 
-        # Search first
+        # Autocorrect first
+        corrected = autocorrect(q).text.strip()
+
+        if corrected.lower() != q.lower():
+            fixed_query = corrected
+            q = corrected
+
+        # Search after correction
         results = search(q, limit)
 
-        # Remove weak results
-        results = [r for r in results if r["score"] >= 0.08]
+        # Final filter (only good results)
+        min_score = 0.18
+        if len(original_q.split()) >= 4:
+            min_score = 0.12
 
-        # If no results or first result is weak -> try autocorrect
-        if len(results) == 0 or results[0]["score"] < 0.35:
+        results = [r for r in results if r["score"] >= min_score]
 
-            fixed_q = autocorrect(q).text.strip()
-
-            if fixed_q.lower() != q.lower():
-                suggestion = f"Did you mean: {fixed_q}\n\n"
-                q = fixed_q
-                results = search(q, limit)
-
-                # Remove weak results after autocorrect
-                results = [r for r in results if r["score"] >= 0.08]
-
-        # If still no results
+        # No results
         if len(results) == 0:
-            return Response(
-                content=suggestion + "No relevant books found.",
-                media_type="text/plain",
-                status_code=200
-            )
+            payload = {
+                "status": "fail",
+                "data": {
+                    "message": "No relevant books found."
+                }
+            }
 
-        # Try AI response
+            if fixed_query:
+                payload["data"]["fixedQuery"] = fixed_query
+
+            return JSONResponse(content=payload, status_code=200)
+
+        # Build success response
+        data = {
+            "json": results
+        }
+
+        if fixed_query:
+            data["fixedQuery"] = fixed_query
+
+        # Try AI text generation
         try:
-            text = generateHumanResponse(json.dumps(results)).text
+            generated_text = generateHumanResponse(json.dumps(results)).text
+            data["text"] = generated_text
 
         except Exception as e:
-            print("Gemini Failed:", e)
+            print("AI Failed:", e)
 
-            text = "📚 Books Found:\n\n"
-
-            for i, book in enumerate(results, 1):
-                data = book["data"]
-
-                text += f"{i}. {data['title']}\n"
-                text += f"👤 Author: {data['author']}\n"
-                text += f"📂 Category: {data['category']}\n"
-                text += f"📍 Location: {data['location']}\n"
-                text += f"📝 {data['description']}\n"
-                text += f"⭐ Score: {round(book['score'], 2)}\n\n"
-
-        return Response(
-            content=suggestion + text,
-            media_type="text/markdown",
+        return JSONResponse(
+            content={
+                "status": "success",
+                "data": data
+            },
             status_code=200
         )
 
     except Exception as e:
         print("ERROR:", e)
 
-        raise HTTPException(
-            status_code=500,
-            detail="Internal server error"
+        return JSONResponse(
+            content={
+                "status": "error",
+                "message": "Internal server error"
+            },
+            status_code=500
         )

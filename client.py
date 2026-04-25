@@ -1,21 +1,35 @@
 from google import genai
+from groq import Groq
 from dotenv import load_dotenv
 from difflib import get_close_matches
 import json
+import os
 
 # Loading DOTENV
 load_dotenv('.env')
 
-# Configure Client
-client = genai.Client()
+# Gemini Client (for embeddings)
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+# Groq Client (for responses)
+groq = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
 # Functions
 def chat(text):
-    return client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=text
+    response = groq.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[
+            {"role": "user", "content": text}
+        ]
     )
+
+    class Result:
+        pass
+
+    result = Result()
+    result.text = response.choices[0].message.content
+    return result
 
 
 def embed(text):
@@ -31,7 +45,7 @@ def autocorrect(text):
 
     words_db = []
 
-    # 🔥 build words database from title + category + keywords
+    # build words database from title + category + keywords
     for book in books:
         words_db += book["title"].lower().split()
         words_db += book["category"].lower().split()
@@ -47,12 +61,12 @@ def autocorrect(text):
 
     for word in user_words:
 
-        # إذا الكلمة صحيحة
+        # if word is already correct
         if word in words_db:
             corrected_words.append(word)
             continue
 
-        # إذا قصيرة جدا
+        # if word is too short
         if len(word) <= 2:
             corrected_words.append(word)
             continue
