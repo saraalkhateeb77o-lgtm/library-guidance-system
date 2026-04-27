@@ -1,26 +1,3 @@
-# from client import embed 
-# import database.collections.books as books 
-# from dotenv import load_dotenv 
-# load_dotenv('.env') 
-
-# def search(term, results): 
-#     termEmbedding = embed(term).embeddings[0].values 
-#     result = books.collection.query( 
-#         query_embeddings = [termEmbedding],
-#         n_results = results, 
-#         # include = ['embeddings', 'metadatas'] 
-#     ) 
-#     docs = [] 
-#     for i in range(len(result['ids'])): 
-#         doc = { 
-#             'id': result['ids'][i], 
-#             'data': result['metadatas'][i], 
-#             # 'embeddings': result['embeddings'][i] 
-#         } 
-#         docs.append(doc) 
-
-#     return docs
-
 from client import embed
 import database.collections.books as books
 from dotenv import load_dotenv
@@ -44,13 +21,13 @@ def search(term, results):
     metadatas = result['metadatas'][0]
     ids = result['ids'][0]
 
-    # ✅ adaptive threshold (based on distribution)
+    # adaptive threshold
     avg = sum(distances) / len(distances)
     best = distances[0]
 
     threshold = (best + avg) / 2 + 0.05
 
-    # 🔥 loosen threshold for short queries (like "ai")
+    # loosen threshold for short queries
     if len(term.split()) == 1:
         threshold += 0.05
 
@@ -62,7 +39,7 @@ def search(term, results):
                 'distance': distances[i]
             })
 
-    # ✅ fallback if empty
+    # fallback if empty
     if not docs:
         for i in range(min(3, len(ids))):
             docs.append({
@@ -71,20 +48,10 @@ def search(term, results):
                 'distance': distances[i]
             })
 
-    # 🔥 QUERY EXPANSION
     term_lower = term.lower()
     expanded_terms = [term_lower]
 
-    if term_lower == "computer":
-        expanded_terms += ["software", "technology", "programming", "engineering"]
-
-    elif term_lower == "engine":
-        expanded_terms += ["engineering", "mechanical", "machine"]
-
-    elif term_lower == "ai":
-        expanded_terms += ["artificial intelligence", "machine learning", "neural networks"]
-
-    # 🔥 SCORING SYSTEM
+    # scoring system
     scored_docs = []
 
     for doc in docs:
@@ -92,9 +59,9 @@ def search(term, results):
         keywords_list = doc['data'].get('keywords', [])
         category = doc['data'].get('category', '').lower()
 
-        score = 1 - doc['distance']  # base semantic score
+        score = 1 - doc['distance']
 
-        # 🔥 boosts
+        # boosts
         if any(t in title for t in expanded_terms):
             score += 0.3
 
@@ -109,17 +76,16 @@ def search(term, results):
 
         doc['score'] = score
 
-        # 🔥 adaptive score filtering (NOT fixed anymore)
         min_score = max(0.35, (1 - avg) * 0.7)
 
         if score >= min_score:
             scored_docs.append(doc)
 
-    # ✅ fallback again if over-filtered
+    # fallback again if over-filtered
     if not scored_docs:
         scored_docs = docs[:3]
 
-    # ✅ final ranking
+    # final ranking
     scored_docs.sort(key=lambda x: x['score'], reverse=True)
 
     return scored_docs[:results]

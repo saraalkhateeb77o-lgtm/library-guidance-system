@@ -6,12 +6,19 @@ import json
 from utils.searchDB import search
 from aiFunctions.generateBooksResponse import generate as generateHumanResponse
 from client import autocorrect
-
+from fastapi.middleware.cors import CORSMiddleware
 # Load environment variables
 load_dotenv(".env")
 
 # FastAPI app
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
@@ -66,7 +73,7 @@ def search_books(
 
         # Build success response
         data = {
-            "json": results
+            "json": results, 
         }
 
         if fixed_query:
