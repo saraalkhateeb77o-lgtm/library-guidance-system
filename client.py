@@ -2,25 +2,28 @@ from google import genai
 from groq import Groq
 from dotenv import load_dotenv
 from difflib import get_close_matches
-import json
+import database.collections.books as books
 import os
 
 # Loading DOTENV
 load_dotenv('.env')
 
-# Gemini Client (for embeddings)
+# Gemini Client (for embeddings) - (مش رح نستخدمه حالياً)
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Groq Client (for responses)
 groq = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 
-# Functions
+# ✅ Chat function (زي قبل - بدون أي تعديل)
 def chat(text):
     response = groq.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[
-            {"role": "user", "content": text}
+            {
+                "role": "user",
+                "content": text
+            }
         ]
     )
 
@@ -31,47 +34,52 @@ def chat(text):
     result.text = response.choices[0].message.content
     return result
 
-
-def embed(text):
-    return client.models.embed_content(
-        model="gemini-embedding-001",
-        contents=text
+def chatGemini(text): 
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=text,
     )
 
+    return response
 
+# ✅ embedding
+from chromadb.utils import embedding_functions
+
+embedding_function = embedding_functions.DefaultEmbeddingFunction()
+
+def embed(text):
+    return embedding_function([text])
+
+
+# Autocorrect (زي ما هو)
 def autocorrect(text):
-    with open("books.json", "r", encoding="utf-8") as f:
-        books = json.load(f)
+    result = books.collection.get(include=['metadatas'])
 
     words_db = []
 
-    # build words database from title + category + keywords
-    for book in books:
-        words_db += book["title"].lower().split()
-        words_db += book["category"].lower().split()
+    # Build vocabulary from Chroma metadata
+    for data in result['metadatas']:
+        words_db += (data.get('title_en') or '').lower().split()
+        words_db += (data.get('category_en') or '').lower().split()
+        words_db += (data.get('keywords_en') or '').lower().split()
 
-        for kw in book["keywords"]:
-            words_db += kw.lower().split()
-
-    # remove duplicates
-    words_db = list(set(words_db))
+    words_db = list(set(words_db))  # remove duplicates
 
     user_words = text.lower().split()
     corrected_words = []
 
     for word in user_words:
-
-        # if word is already correct
+        # keep correct words
         if word in words_db:
             corrected_words.append(word)
             continue
 
-        # if word is too short
+        # skip short words
         if len(word) <= 2:
             corrected_words.append(word)
             continue
 
-        # search similar word
+        # find closest match
         match = get_close_matches(word, words_db, n=1, cutoff=0.65)
 
         if match:
@@ -81,6 +89,7 @@ def autocorrect(text):
 
     corrected = " ".join(corrected_words)
 
+    # mimic your original return structure
     class Result:
         pass
 

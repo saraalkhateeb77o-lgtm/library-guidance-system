@@ -7,6 +7,7 @@ from utils.searchDB import search
 from aiFunctions.generateBooksResponse import generate as generateHumanResponse
 from client import autocorrect
 from fastapi.middleware.cors import CORSMiddleware
+
 # Load environment variables
 load_dotenv(".env")
 
@@ -34,21 +35,70 @@ def root():
 @app.get("/search")
 def search_books(
     q: str = Query(..., description="Search query"),
-    limit: int = Query(15, ge=1, le=20)
+    limit: int = Query(15, ge=1, le=20),
+    humanize: bool = Query(False)
 ):
     try:
         original_q = q
         fixed_query = None
 
-        # Autocorrect first
+        # 🔥 Autocorrect (for English mainly)
         corrected = autocorrect(q).text.strip()
 
         if corrected.lower() != q.lower():
             fixed_query = corrected
             q = corrected
 
-        # Search after correction
+        # 🔍 Search
         results = search(q, limit)
+
+        # ======================================
+        # 🔥 Handle Arabic response (NEW PART)
+        # ======================================
+        if isinstance(results, dict):
+
+            # ❌ No results
+            if "message" in results:
+                return JSONResponse(
+                    content={
+                        "status": "fail",
+                        "data": {
+                            "message": results["message"],
+                            "fixedQuery": results.get("fixedQuery")
+                        }
+                    },
+                    status_code=200
+                )
+
+            # ✅ Success
+            data = {
+                "json": results["results"]
+            }
+
+            if results.get("fixedQuery"):
+                data["fixedQuery"] = results["fixedQuery"]
+
+            # ✅ AI response (FIXED HERE)
+            try:
+                generated_text = generateHumanResponse(
+                    json.dumps(results["results"], ensure_ascii=False),
+                    q
+                ).text
+                data["text"] = generated_text
+            except Exception as e:
+                print("AI Failed:", e)
+
+            return JSONResponse(
+                content={
+                    "status": "success",
+                    "data": data
+                },
+                status_code=200
+            )
+
+        # ======================================
+        # 🔵 ENGLISH FLOW (UNCHANGED)
+        # ======================================
 
         # Final filter (only good results)
         min_score = 0.18
@@ -73,17 +123,20 @@ def search_books(
 
         # Build success response
         data = {
-            "json": results, 
+            "json": results,
         }
 
         if fixed_query:
             data["fixedQuery"] = fixed_query
 
-        # Try AI text generation
+        # ✅ AI response (FIXED HERE TOO)
         try:
-            generated_text = generateHumanResponse(json.dumps(results)).text
-            data["text"] = generated_text
-
+            if humanize:
+                generated_text = generateHumanResponse(
+                    json.dumps(results, ensure_ascii=False),
+                    q
+                ).text
+                data["text"] = generated_text
         except Exception as e:
             print("AI Failed:", e)
 

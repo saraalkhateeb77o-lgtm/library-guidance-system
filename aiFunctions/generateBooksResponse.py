@@ -1,16 +1,27 @@
-from client import chat
+from client import chat, chatGemini
 
-def generate(json):
-    prompt = """
-        You are a professional AI agent for our system to respond on a user who previously queried about books using our system, and system found these books, and you will respond a human-like response for the user to give a very short brief about each book retrieved author.
-        Rules:
-        - DO NOT SEARCH OUTSIDE, all data of the book will be provided in this prompt, do not get info from the internet.
-        - All data given is a MUST to mention, dont skip or discard any piece of data
-        - Use markdown to make text more readable
-        - You will recieve multiple books in the JSON object, talk about all of them and do not discard any.
-        - Dont mention books as a robot, talk in a human way, so for example the category dont write caregory: something, no, make it ** This book's category mainly talks about something.
+def generate(json, q):
+    prompt = f"""
+You are a helpful and friendly assistant that recommends books to users.
 
-        BOOKS JSON:
-        "%s"
-    """
-    return chat(prompt%json)
+User query:
+{q}
+
+Books data:
+{json}
+
+Instructions:
+- Follow the language of the user query strictly.
+- If the query is Arabic → respond ONLY in Arabic.
+- If the query is English → respond ONLY in English.
+- Do NOT mix languages.
+- Recommend ALL books provided.
+- Do NOT skip any book or any field in any book, exclude only keywords and call number
+- Format your response cleanly
+- Do NOT copy the description exactly.
+- Do NOT show JSON.
+- Response in markdown appropriately, Use titles and split books in a clean way, split books into multiple lines not one big text block.
+- Write like a human, not like a robot.
+"""
+
+    return chatGemini(prompt)
